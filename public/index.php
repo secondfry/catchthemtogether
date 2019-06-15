@@ -6,21 +6,29 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class OurDB{
-  private $host = "localhost";
-  private $db_name = "ourdb_name";
-  private $username = "root";
-  private $password = "jojo";
-  public $conn;
+  private static $host = "localhost";
+  private static $db_name = "ourdb_name";
+  private static $username = "root";
+  private static $password = "jojo";
+  public static $conn = null;
 
-  public function getConnection(){
-    $this->conn = null;
+  public static function getConnection(){
+
     try{
-      $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
-      $this->conn->exec("set names utf8");
+      OurDB::$conn = new PDO("mysql:host=" . OurDB::$host . ";dbname=" . OurDB::$db_name, OurDB::$username, OurDB::$password);
+      OurDB::$conn->exec("set names utf8");
     } catch(PDOException $exception){
       echo "Connection error: " . $exception->getMessage();
     }
-    return $this->conn;
+    return OurDB::$conn;
+  }
+
+  public static function query($select){
+    if (OurDB::getConnection() == null){
+      echo "Connection error";
+      return;
+    }
+    OurDB::getConnection()->query($select);
   }
 }
 
@@ -40,21 +48,20 @@ $table1 = "streamers";
 $table2 = "streams";
 
 $app->get('/api/streamers/all', function (Request $request, Response $response, array $args) {
-  $res = (new OurDB())->getConnection()->query('SELECT id, twitch_name, streamers FROM streamers');
-  $response->getBody()->withJSON($res);
-  return $response;
+  $res = OurDB::query('SELECT id, twitch_name, streamers FROM streamers');
+  return $response->withJSON($res);
 });
 
 $app->get('api/streamers/{name}', function (Request $request, Response $response, array $args){
   $twitch_name = args['name'];
-  $stream->query('SELECT stream_name FROM streams WHERE twitch_name=' . $twitch_name);
-  $response->getBody()->withJSON($stream);
+  $stream = OurDB::query('SELECT stream_name FROM streams WHERE twitch_name=' . $twitch_name);
+  return $response->withJSON($stream);
 });
 
 $app->get('api/streamers/{name}/{vod_id}', function (Request $request, Response $response, array $args){
   $twitch_name = args['name'];
   $id_vod = args['vod_id'];
-  $response->getBody()->withJSON($id_vod);
+  return $response->withJSON($id_vod);
 });
 $app->run();
 
