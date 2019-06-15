@@ -47,14 +47,16 @@ $app->get('/api/streamers/all', function (Request $request, Response $response, 
   return $response;
 });
 
-$app->get('api/streamers/:username', function (Request $request, Response $response, array $args){
-  $stream->query('SELECT stream_name FROM streams');
+$app->get('api/streamers/{name}', function (Request $request, Response $response, array $args){
+  $twitch_name = args['name'];
+  $stream->query('SELECT stream_name FROM streams WHERE twitch_name=' . $twitch_name);
   $response->getBody()->withJSON($stream);
 });
 
-$app->get('api/streamers/:username/:vod_id', function (Request $request, Response $response, array $args){
- $id_vod->query('SELECT id_vod FROM streams');
- $response->getBody()->withJSON($id_vod);
+$app->get('api/streamers/{name}/{vod_id}', function (Request $request, Response $response, array $args){
+  $twitch_name = args['name'];
+  $id_vod = args['vod_id'];
+  $response->getBody()->withJSON($id_vod);
 });
 $app->run();
 
