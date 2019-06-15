@@ -45,16 +45,13 @@ if __name__ == '__main__':
 
             i = 0
             for lm in landmarks:
-                facial5points = [[lm[0][j], lm[0][j + 5]] for j in range(5)]
+                facial5points = [[lm[j], lm[j + 5]] for j in range(5)]
                 warped_face = warp_and_crop_face(np.array(img), facial5points, reference, crop_size=(crop_size, crop_size))
                 img_warped = Image.fromarray(warped_face)
-                if image_name.split('.')[-1].lower() not in ['jpg', 'jpeg']: #not from jpg
-                    image_name = '.'.join(image_name.split('.')[:-1]) + '.jpg'
 
-                tmp = image_name.split('.')
-                tmp.pop()
-                tmp.append('_{}'.format(i))
+                new_image_name = '{}_{}.jpg'.format(image_name, i)
                 i += 1
-                new_image_name = '.'.join(tmp)
 
                 img_warped.save(os.path.join(dest_root, subfolder, new_image_name))
+
+            os.unlink(os.path.join(source_root, subfolder, image_name))
