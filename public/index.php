@@ -39,14 +39,6 @@ $app = new \Slim\App($c);
 $table1 = "streamers";
 $table2 = "streams";
 
-public $id;
-public $twitch_name;
-public $streamer;
-public $stream;
-public $id_vod;
-public $start;
-public $finish;
-
 $app->get('/api/streamers/all', function (Request $request, Response $response, array $args) {
   $id->query('SELECT id FROM streamers');
   $twitch_name->query('SELECT twitch_name FROM streamers');
