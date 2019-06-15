@@ -1,0 +1,31 @@
+@font-face
+{
+	font-family: abc;
+	src: url('../fonts/Ubuntu-R.ttf');
+}
+
+.main
+{
+	margin-top: 50px;
+}
+
+body
+{
+	// background: -moz-linear-gradient(-45deg, #ffddf6 0%, #c0afcc 100%); /* FF3.6-15 */
+	// background: -webkit-linear-gradient(-45deg, #ffddf6 0%,#c0afcc 100%); /* Chrome10-25,Safari5.1-6 */
+	// background: linear-gradient(135deg, #ffddf6 0%,#c0afcc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	font-family: abc;
+	font-size: 20px;
+}
+
+html
+{
+	cursor: url('../ads/too913.png'), default;
+	height: 100% !important;
+}
+
+html *
+{
+	cursor: default;
+	cursor: url('../ads/too913.png'), default;
+}
