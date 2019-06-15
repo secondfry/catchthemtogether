@@ -40,10 +40,8 @@ $table1 = "streamers";
 $table2 = "streams";
 
 $app->get('/api/streamers/all', function (Request $request, Response $response, array $args) {
-  $id->query('SELECT id FROM streamers');
-  $twitch_name->query('SELECT twitch_name FROM streamers');
-  $streamer->query('SELECT name FROM streamers');
-  $response->getBody()->withJSON($id, $twitch_name, $streamer);
+  $res = (new OurDB())->getConnection()->query('SELECT id, twitch_name, streamers FROM streamers');
+  $response->getBody()->withJSON($res);
   return $response;
 });
 
