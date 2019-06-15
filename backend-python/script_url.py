@@ -43,14 +43,16 @@ def kappamain(name):
     r = requests.get(url)
     r.raise_for_status()
     with open(os.path.join(DATA_PATH, 'url.txt'), 'wb') as f:
-        f.write(r.text)
+        f.write(r.content)
     
     with open(os.path.join(DATA_PATH, 'url.txt'), 'r') as f:
         for str in f:
             if 'http://' in str:
                 break
 
-    subprocess.call(['ffmpeg', '-i', str, '-vf', 'fps=1', '{}/out%d.png'.format(name)])
+    str = str.rstrip()
+    print(' '.join(['ffmpeg', '-i', str, '-vf', 'fps=1', '{}/out%d.png'.format(DATA_PATH)]))
+    subprocess.call(['ffmpeg', '-i', str, '-vf', 'fps=1', '{}/out%d.png'.format(DATA_PATH)])
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
