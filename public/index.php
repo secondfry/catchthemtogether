@@ -57,17 +57,19 @@ $app->get('/api/streamers/all', function (Request $request, Response $response, 
 $app->get('/api/streamers/{name}', function (Request $request, Response $response, array $args) {
   $twitch_name = $args['name'];
 
-  $statement = OurDB::getConnection()->prepare('SELECT * FROM streams WHERE twitch_name = ?');
+  $statement = OurDB::getConnection()->prepare('SELECT id_vod FROM streams WHERE twitch_name = ?');
   $statement->execute(array($twitch_name));
   $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+  $i = 0;
+  foreach($results as $result) {
+    $statement = OurDB::getConnection()->prepare('SELECT twitch_name, timestamp_start, timestamp_finish FROM streams WHERE id_vod = ?');
+    $statement->execute(array($result['id_vod']));
 
-  return $response->withJSON($results);
-});
-
-$app->get('/api/streamers/{name}/{vod_id}', function (Request $request, Response $response, array $args) {
-  $twitch_name = $args['name'];
-  $id_vod = args['vod_id'];
-  return $response->withJSON($id_vod);
+    $a[$i]['vod_id'] = $result['id_vod'];
+    $a[$i]['people'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $i++;
+  }
+  return $response->withJSON($a);
 });
 
 $app->run();
