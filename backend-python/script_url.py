@@ -4,6 +4,7 @@ import json
 import os
 import requests
 import string
+import subprocess
 import sys
 
 
@@ -28,7 +29,7 @@ def parse_stream(streamer_name):
     return streamer_url
 
 def kappamain(name):
-    DATA_PATH = os.path.join(os.getcwd(), name)
+    DATA_PATH = os.path.join(os.getcwd(), 'data', name)
 
     try:
         os.mkdir(DATA_PATH)
@@ -41,15 +42,15 @@ def kappamain(name):
 
     r = requests.get(url)
     r.raise_for_status()
-    with open(os.path.join(DATA_PATH, name), 'wb') as f:
+    with open(os.path.join(DATA_PATH, 'url.txt'), 'wb') as f:
         f.write(r.text)
     
-    with open(os.path.join(DATA_PATH, name), 'r') as f:
+    with open(os.path.join(DATA_PATH, 'url.txt'), 'r') as f:
         for str in f:
             if 'http://' in str:
                 break
 
-    print(str)
+    subprocess.call(['ffmpeg', '-i', str, '-vf', 'fps=1', '{}/out%d.png'.format(name)])
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:

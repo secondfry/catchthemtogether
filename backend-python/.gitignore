@@ -1,4 +1,5 @@
 *
+!detector/
+!detector/**
 !script_url.py
-
 !.gitignore
