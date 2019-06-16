@@ -109,7 +109,7 @@ def kappamain(conf):
               u'view_count': 11027064}
     user['_id'] = user['id']
     try:
-      db.streamers.replace_one(user, upsert=True)
+      db.streamers.replace_one({'_id': user['_id']}, user, upsert=True)
     except Exception as e:
       print(e)
 

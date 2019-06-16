@@ -2,6 +2,7 @@
 
 import argparse
 import numpy as np
+import os
 import tqdm
 
 from face_recognition import FaceRecognizer
@@ -24,7 +25,7 @@ if __name__ == '__main__':
 
   stream = db.streams.find_one({'id': conf.vod})
   if not stream:
-    stream = {'id': conf.vod, 'persons': []}
+    stream = {'_id': conf.vod, 'id': conf.vod, 'persons': []}
 
   for image_name in tqdm(os.listdir(conf.root)):
     img = Image.open(os.path.join(conf.root, image_name))
@@ -40,7 +41,7 @@ if __name__ == '__main__':
       stream['persons'].append(res)
 
     try:
-      db.streams.replace_one(stream, upsert=True)
+      db.streams.replace_one({'_id': stream['_id']}, stream, upsert=True)
     except Exception as e:
       print(e)
       pass
