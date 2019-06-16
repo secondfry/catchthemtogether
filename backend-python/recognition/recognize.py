@@ -2,6 +2,7 @@
 
 import argparse
 import numpy as np
+import tqdm
 
 from face_recognition import FaceRecognizer
 from PIL import Image
