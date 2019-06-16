@@ -16,7 +16,7 @@ if __name__ == '__main__':
   conf = parser.parse_args()
 
   # CV
-  model = FaceRecognizer(weights='weights/backbone_ir50_ms1m_epoch63.pth')
+  model = FaceRecognizer()
 
   # DB
   db = MongoClient('localhost', 27017).schoolcv
