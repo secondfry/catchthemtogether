@@ -1,12 +1,15 @@
 #!/usr/bin/python
 
-from PIL import Image
-from detector import detect_faces
-from align_trans import get_reference_facial_points, warp_and_crop_face
+import argparse
 import numpy as np
 import os
+import sys
+import traceback
+
+from align_trans import get_reference_facial_points, warp_and_crop_face
+from detector import detect_faces
+from PIL import Image
 from tqdm import tqdm
-import argparse
 
 
 if __name__ == '__main__':
@@ -36,8 +39,10 @@ if __name__ == '__main__':
 
     try: # Handle exception
       _, landmarks = detect_faces(img)
-    except Exception:
-      print("{} is discarded due to exception!".format(os.path.join(source_root, subfolder, image_name)))
+    except Exception as e:
+      print("{} is discarded due to exception!".format(os.path.join(source_root, image_name)))
+      traceback.print_exc(file=sys.stdout)
+      print(e)
       continue
     if len(landmarks) == 0: # If the landmarks cannot be detected, the img will be discarded
       print("{} is discarded due to non-detected landmarks!".format(os.path.join(source_root, subfolder, image_name)))
