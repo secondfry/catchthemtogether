@@ -59,4 +59,4 @@ if __name__ == '__main__':
 
       img_warped.save(os.path.join(dest_root, new_image_name))
 
-    os.unlink(os.path.join(source_root, subfolder, image_name))
+    os.unlink(os.path.join(source_root, image_name))
