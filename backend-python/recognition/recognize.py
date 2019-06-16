@@ -39,6 +39,6 @@ if __name__ == '__main__':
 
     try:
       db.streams.replace_one(stream, upsert=True)
-    except e:
+    except Exception as e:
       print(e)
       pass

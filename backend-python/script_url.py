@@ -110,7 +110,7 @@ def kappamain(conf):
     user['_id'] = user['id']
     try:
       db.streamers.replace_one(user, upsert=True)
-    except e:
+    except Exception as e:
       print(e)
 
   # vod = get_latest_vod_by_uid(user['id'])
