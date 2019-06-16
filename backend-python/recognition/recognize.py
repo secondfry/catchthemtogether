@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import argparse
 import numpy as np
 
 from face_recognition import FaceRecognizer
